@@ -45,7 +45,7 @@ app.get(
 
     await db.get('entries').push({from, to}).write()
     .then(() => generateDomainsFile())
-    .then(() => promisifyChildProcess(exec.exec("reconfig"), "Reconfiguring of https-portail failed. Please check logs."))
+    .then(() => promisifyChildProcess(exec.exec("reconfig"), "Reconfigured successfully!", "Reconfiguring of https-portail failed. Please check logs."))
     .catch((err) => {
         console.log(err);
         next(err);
@@ -99,7 +99,7 @@ app.get("/remove",
     }
     await db.get('entries').remove(removeKey).write()
     .then(() => generateDomainsFile())
-    .then(() => promisifyChildProcess(exec.exec("reconfig"), "Reconfiguring of https-portail failed. Please check logs."))
+    .then(() => promisifyChildProcess(exec.exec("reconfig"), "Reconfigured successfully!", "Reconfiguring of https-portail failed. Please check logs."))
     .catch((err) => {
         console.log(err);
         next(err);
