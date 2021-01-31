@@ -33,7 +33,7 @@ async function generateDomainsFile(): Promise<void> {
   return promisify(fs.writeFile)(path.join(config.domains_dir, config.domains_file), output);
 }
 
-function promisifyChildProcess(child: ChildProcess): Promise<void> {
+function promisifyChildProcess(child: ChildProcess, errmesage: string = null): Promise<void> {
   return new Promise((resolve, reject) => {
     
     child.addListener("error", reject);
@@ -42,7 +42,7 @@ function promisifyChildProcess(child: ChildProcess): Promise<void> {
       if (code === 0) {
         resolve();
       } else {
-        reject("Child process exited with non-zero code");
+        reject(errmesage || "Child process exited with non-zero code");
       }
     });
   });
