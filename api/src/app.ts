@@ -46,11 +46,10 @@ app.get(
     await db.get('entries').push({from, to}).write()
     .then(() => generateDomainsFile())
     .then(() => promisifyChildProcess(exec.exec("reconfig")))
+    .then(() => {res.sendStatus(204)})
     .catch((err) => {
         console.log(err);
         next(err);
-    }).finally(() => {
-      res.sendStatus(204);
     });
 
 }));
@@ -100,13 +99,11 @@ app.get("/remove",
     await db.get('entries').remove(removeKey).write()
     .then(() => generateDomainsFile())
     .then(() => promisifyChildProcess(exec.exec("reconfig")))
+    .then(() => { res.sendStatus(204); })
     .catch((err) => {
         console.log(err);
         next(err);
-    }).finally(() => {
-      res.sendStatus(204);
     });
-
 }));
 
 app.get("/dump/:how",
@@ -153,9 +150,8 @@ app.get("/clear",
 
 app.get("/reconfig",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    promisifyChildProcess(exec.exec("reconfig")).then(() => {
-      res.sendStatus(204);
-    })
+    promisifyChildProcess(exec.exec("reconfig"))
+    .then(() => { res.sendStatus(204); })
     .catch((err) => {
         console.log(err);
         next(err);
