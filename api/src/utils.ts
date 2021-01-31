@@ -6,6 +6,7 @@ import lowdb from "lowdb";
 import FileAsync from "lowdb/adapters/FileAsync";
 import { ChildProcess } from "child_process";
 import { promisify } from "util";
+import axios from "axios";
 
 function createIfNotExists(paths: string) {
   if (!fs.existsSync(paths)) {
@@ -21,7 +22,7 @@ async function generateDomainsString(): Promise<string> {
   const data = db.get('entries').value();
   let output: string = "";
 
-  for(let entry of data){
+  for(const entry of data){
     output += entry.from + " -> " + entry.to + ", ";
   }
 
@@ -35,7 +36,7 @@ async function generateDomainsFile(): Promise<void> {
 
 function promisifyChildProcess(child: ChildProcess): Promise<void> {
   return new Promise((resolve, reject) => {
-    
+
     child.addListener("error", reject);
     child.addListener("exit", (code) => {
       console.log(`Child process exited with code ${code}`);
@@ -48,4 +49,23 @@ function promisifyChildProcess(child: ChildProcess): Promise<void> {
   });
 }
 
-export { createIfNotExists, generateDomainsString, generateDomainsFile, promisifyChildProcess };
+async function getDAppNodeDomain(): Promise <string> {
+  const url: string = "http://my.dappnode/global-envs/DOMAIN";
+  const maxPolls: number = 20;
+  let polls: number = 0;
+  const pollingFn = (resolve, reject): void => {
+      axios.get(url).then((response) => {
+        polls++;
+        if(response.status === 200) {
+          resolve(response.data);
+        } else if(polls >= maxPolls) {
+          reject("Max polls exceded");
+        } else {
+          setTimeout(pollingFn, 1000);
+        }
+      })
+  };
+  return new Promise<string>(pollingFn);
+}
+
+export { createIfNotExists, generateDomainsString, generateDomainsFile, promisifyChildProcess, getDAppNodeDomain };
