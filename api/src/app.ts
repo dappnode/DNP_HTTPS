@@ -1,14 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { oneOf, query, param, validationResult } from "express-validator";
-import { generateDomainsFile, generateDomainsString, promisifyChildProcess, getDAppNodeDomain } from './utils'
+import shell, { generateDomainsFile, generateDomainsString, getDAppNodeDomain } from './utils'
 import morgan from "morgan";
 import path from "path";
 import config from "./config";
 import { Schema } from "./types";
 import lowdb from "lowdb";
 import FileAsync from "lowdb/adapters/FileAsync";
-import exec from 'child_process';
 import empty from "is-empty";
 import fs from "fs";
 
@@ -42,14 +41,10 @@ app.get(
       return res.status(400).json({ error: "External endpoint already exists!" });
     }
 
-    await db.get('entries').push({from, to}).write()
-    .then(() => generateDomainsFile())
-    .then(() => promisifyChildProcess(exec.exec("reconfig")))
-    .then(() => {res.sendStatus(204)})
-    .catch((err) => {
-        console.log(err);
-        next(err);
-    });
+    await db.get('entries').push({from, to}).write();
+    await generateDomainsFile();
+    console.log(await shell("reconfig"));
+    return res.status(204);
 
 }));
 
@@ -94,13 +89,10 @@ app.get("/remove",
       }
       removeKey = {from, to};
     }
-    await db.get('entries').remove(removeKey).write()
-    .then(() => generateDomainsFile())
-    .then(() => promisifyChildProcess(exec.exec("reconfig")))
-    .then(() => { res.sendStatus(204); })
-    .catch((err) => {
-        console.log(err);
-    });
+    await db.get('entries').remove(removeKey).write();
+    await generateDomainsFile();
+    console.log(await shell("reconfig"));
+    return res.sendStatus(204);
 }));
 
 app.get("/dump/:how",
@@ -133,11 +125,7 @@ app.get("/clear",
       fs.unlinkSync(dbFile);
       const adapter = new FileAsync<Schema>(dbFile);
       const db = await lowdb(adapter);
-      db.defaults({ entries: [] }).write()
-      .then(() => generateDomainsFile())
-      .catch((err) => {
-        console.log(err);
-      });
+      await db.defaults({ entries: [] }).write();
     }
 
     return res.sendStatus(204);
@@ -146,12 +134,8 @@ app.get("/clear",
 
 app.get("/reconfig",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    promisifyChildProcess(exec.exec("reconfig"))
-    .then(() => { res.sendStatus(204); })
-    .catch((err) => {
-        console.log(err);
-        next(err);
-    });
+    console.log(await shell("reconfig"));
+    return res.sendStatus(204);
 }));
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
