@@ -15,6 +15,9 @@ import axios from "axios"
 
 const app = express();
 
+const reconfig_succmessage: string = "Reconfigured successfully!";
+const reconfig_errmessage: string = "Reconfiguring of https-portail failed. Please check logs.";
+
 app.use(morgan("tiny"));
 app.get(
   "/add",
@@ -45,7 +48,7 @@ app.get(
 
     await db.get('entries').push({from, to}).write()
     .then(() => generateDomainsFile())
-    .then(() => promisifyChildProcess(exec.exec("reconfig"), "Reconfigured successfully!", "Reconfiguring of https-portail failed. Please check logs."))
+    .then(() => promisifyChildProcess(exec.exec("reconfig"), reconfig_succmessage, reconfig_errmessage))
     .catch((err) => {
         console.log(err);
         next(err);
@@ -99,7 +102,7 @@ app.get("/remove",
     }
     await db.get('entries').remove(removeKey).write()
     .then(() => generateDomainsFile())
-    .then(() => promisifyChildProcess(exec.exec("reconfig"), "Reconfigured successfully!", "Reconfiguring of https-portail failed. Please check logs."))
+    .then(() => promisifyChildProcess(exec.exec("reconfig"), reconfig_succmessage, reconfig_errmessage))
     .catch((err) => {
         console.log(err);
         next(err);
@@ -153,9 +156,8 @@ app.get("/clear",
 
 app.get("/reconfig",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    promisifyChildProcess(exec.exec("reconfig")).then(() => {
-      res.sendStatus(204);
-    })
+    promisifyChildProcess(exec.exec("reconfig"), reconfig_succmessage, reconfig_errmessage)
+    .then(() => { res.sendStatus(204); })
     .catch((err) => {
         console.log(err);
         next(err);
