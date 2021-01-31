@@ -22,8 +22,6 @@ class CertsManager
     OpenSSL.ensure_account_key
 
     generate_ht_access(NAConfig.domains)
-    Nginx.stop
-    sleep 1
 
     Nginx.setup
     Nginx.start

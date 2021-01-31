@@ -100,7 +100,6 @@ app.get("/remove",
     .then(() => { res.sendStatus(204); })
     .catch((err) => {
         console.log(err);
-        next(err);
     });
 }));
 
@@ -138,7 +137,6 @@ app.get("/clear",
       .then(() => generateDomainsFile())
       .catch((err) => {
         console.log(err);
-        next(err);
       });
     }
 

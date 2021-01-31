@@ -8,13 +8,6 @@ import { ChildProcess } from "child_process";
 import { promisify } from "util";
 import axios from "axios";
 
-function createIfNotExists(paths: string) {
-  if (!fs.existsSync(paths)) {
-    fs.mkdirSync(paths);
-  }
-}
-
-
 async function generateDomainsString(): Promise<string> {
   const adapter = new FileAsync<Schema>(path.join(config.db_dir, config.db_name));
   const db = await lowdb(adapter);
@@ -63,9 +56,11 @@ async function getDAppNodeDomain(): Promise <string> {
         } else {
           setTimeout(pollingFn, 1000);
         }
+      }).catch((err) => {
+        console.log(err);
       })
   };
   return new Promise<string>(pollingFn);
 }
 
-export { createIfNotExists, generateDomainsString, generateDomainsFile, promisifyChildProcess, getDAppNodeDomain };
+export { generateDomainsString, generateDomainsFile, promisifyChildProcess, getDAppNodeDomain };
