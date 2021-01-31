@@ -40,7 +40,7 @@ async function getDAppNodeDomain(): Promise <string> {
       polls++;
       const response = await axios.get(url);
       if(response.status === 200) {
-        return resolve(response.data);
+        resolve(response.data);
       } else if(polls >= maxPolls) {
         reject("Max polls exceeded")
       } else {
