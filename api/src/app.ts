@@ -11,7 +11,6 @@ import FileAsync from "lowdb/adapters/FileAsync";
 import exec from 'child_process';
 import empty from "is-empty";
 import fs from "fs";
-import axios from "axios"
 
 const app = express();
 
@@ -57,8 +56,7 @@ app.get(
 app.get("/remove",
   oneOf(
     [
-      query("from").exists(),
-      query("to").exists()
+      query("from").exists()
   ]),
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);

@@ -82,9 +82,9 @@ class Domain
       if ENV['PUBLIC_DOMAIN']
         ENV['PUBLIC_DOMAIN']
       else
-        20.each do
+        for i in 1..20 do
           response = RestClient.get('http://my.dappnode/global-envs/DOMAIN')
-          return response.to_str if response.status == 200
+          return response.to_str if response.code == 200
 
           sleep 1
         end
