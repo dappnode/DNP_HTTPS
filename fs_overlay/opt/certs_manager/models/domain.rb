@@ -82,7 +82,13 @@ class Domain
       if ENV['PUBLIC_DOMAIN']
         ENV['PUBLIC_DOMAIN']
       else
-        RestClient.get('http://my.dappnode/global-envs/DOMAIN').to_str
+        20.each do
+          response = RestClient.get('http://my.dappnode/global-envs/DOMAIN')
+          return response.to_str if response.status == 200
+
+          sleep 1
+        end
+        raise('Could not determine domain')
       end
   end
 
