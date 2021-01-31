@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { oneOf, query, param, validationResult } from "express-validator";
-import shell, { generateDomainsFile, generateDomainsString, getDAppNodeDomain } from './utils'
+import { generateDomainsFile, generateDomainsString, getDAppNodeDomain, shell } from './utils'
 import morgan from "morgan";
 import path from "path";
 import config from "./config";
