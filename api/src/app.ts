@@ -150,6 +150,18 @@ app.get("/clear",
     return res.sendStatus(204);
 }));
 
+
+app.get("/reconfig",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    promisifyChildProcess(exec.exec("reconfig"))
+    .catch((err) => {
+        console.log(err);
+        next(err);
+    }).finally(() => {
+      res.sendStatus(204);
+    });
+}));
+
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   return res.status(500).json({
     error: err,
