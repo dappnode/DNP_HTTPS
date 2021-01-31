@@ -44,7 +44,7 @@ app.get(
     await db.get('entries').push({from, to}).write();
     await generateDomainsFile();
     console.log(await shell("reconfig"));
-    return res.status(204);
+    return res.sendStatus(204);
 
 }));
 
