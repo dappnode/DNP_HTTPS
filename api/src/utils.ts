@@ -33,16 +33,16 @@ async function generateDomainsFile(): Promise<void> {
   return promisify(fs.writeFile)(path.join(config.domains_dir, config.domains_file), output);
 }
 
-function promisifyChildProcess(child: ChildProcess, succmessage: string = null, errmesage: string = null): Promise<void> {
+function promisifyChildProcess(child: ChildProcess, successMessage: string = null, errorMessage: string = null): Promise<void> {
   return new Promise((resolve, reject) => {
     
     child.addListener("error", reject);
     child.addListener("exit", (code) => {
-      console.log(succmessage || `Child process exited with code ${code}`);
+      console.log(successMessage || `Child process exited with code ${code}`);
       if (code === 0) {
         resolve();
       } else {
-        reject(errmesage || "Child process exited with non-zero code");
+        reject(errorMessage || "Child process exited with non-zero code");
       }
     });
   });
