@@ -114,6 +114,7 @@ app.get("/", [
     } else if(format === "json") {
       const adapter = new FileAsync<Schema>(path.join(config.db_dir, config.db_name));
       const db = await lowdb(adapter);
+      db.defaults({ entries: [] }).write();
       const data = db.get('entries').value();
       if(!full) {
         return res.status(200).json(deleteDomainPart(data));
