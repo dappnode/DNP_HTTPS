@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { oneOf, query, param, validationResult } from "express-validator";
-import { generateDomainsFile, generateDomainsString, getDAppNodeDomain, shell } from './utils'
+import { generateDomainsFile, generateDomainsString, getDAppNodeDomain, shell, deleteDomainPart } from './utils'
 import morgan from "morgan";
 import path from "path";
 import config from "./config";
@@ -95,17 +95,32 @@ app.get("/remove",
     return res.sendStatus(204);
 }));
 
-app.get("/",
+app.get("/", [
+  query("format").optional().isIn(["txt", "json"]),
+  query("full").optional().isBoolean().toBoolean()
+  ],
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    if(!req.query.format || req.query.format === "txt") {
-      return res.status(200).send(await generateDomainsString());
-    } else if(req.query.format === "json") {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    
+
+    const format = req.query.format || "txt";
+    const full: any = req.query.full === undefined ? true : req.query.full;
+
+    if(format === "txt") {
+      return res.status(200).send(await generateDomainsString(full));
+    } else if(format === "json") {
       const adapter = new FileAsync<Schema>(path.join(config.db_dir, config.db_name));
       const db = await lowdb(adapter);
-      return res.status(200).json(db.get('entries').value())
-    } else {
-      return res.status(400).json({error: "Unknown format, choose between txt and json".})
+      const data = db.get('entries').value();
+      if(!full) {
+        return res.status(200).json(deleteDomainPart(data));
+      }
+      return res.status(200).json(data);
     }
+    return res.status(400).json({error: "Unknown format, choose between txt and json."})
 }));
 
 app.get("/clear",
