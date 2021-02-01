@@ -95,25 +95,17 @@ app.get("/remove",
     return res.sendStatus(204);
 }));
 
-app.get("/dump/:how",
-  [
-    param("how").exists().isIn(["json", "txt"]).withMessage("Only json and txt allowed.")
-  ],
+app.get("/",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const adapter = new FileAsync<Schema>(path.join(config.db_dir, config.db_name));
-    const db = await lowdb(adapter);
-
-    if(req.params.how === "json") {
-      return res.status(200).json(db.get('entries').value())
-    } else if(req.params.how === "txt") {
+    if(!req.query.format || req.query.format === "txt") {
       return res.status(200).send(await generateDomainsString());
+    } else if(req.query.format === "json") {
+      const adapter = new FileAsync<Schema>(path.join(config.db_dir, config.db_name));
+      const db = await lowdb(adapter);
+      return res.status(200).json(db.get('entries').value())
+    } else {
+      return res.status(400).json({error: "Unknown format, choose between txt and json".})
     }
-
 }));
 
 app.get("/clear",
