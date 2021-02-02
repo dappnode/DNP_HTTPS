@@ -85,7 +85,6 @@ module OpenSSL
       )
       raise "Error in api Call" unless response.code == 200
     rescue
-      puts e
       Nginx.stop
       exit
     end
