@@ -84,7 +84,7 @@ module OpenSSL
         payload: { csr: File.new(domain.csr_path, 'rb') }
       )
       raise "Error in api Call" unless response.code == 200
-    rescue RestClient::Exception => e
+    rescue
       puts e
       Nginx.stop
       exit
