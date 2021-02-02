@@ -1,7 +1,7 @@
 require 'date'
 require 'rest-client'
 require 'json'
-require 'lib/nginx'
+require 'nginx'
 
 
 module OpenSSL
