@@ -77,13 +77,15 @@ module OpenSSL
     signature, address = get_eth_signature(timestamp)
     certapi_url = ENV['CERTAPI_URL']
     name = ENV['NAME']
-
-    response = RestClient::Request.execute(method: :post,
-      url: "http://#{certapi_url}/?signature=#{signature}&signer=#{name}&address=#{address}&timestamp=#{timestamp}&force=#{ENV['FORCE']}",
-      timeout: 120,
-      payload: { csr: File.new(domain.csr_path, 'rb') }
-    )
-    if response.code != 200
+    begin
+      response = RestClient::Request.execute(method: :post,
+        url: "http://#{certapi_url}/?signature=#{signature}&signer=#{name}&address=#{address}&timestamp=#{timestamp}&force=#{ENV['FORCE']}",
+        timeout: 120,
+        payload: { csr: File.new(domain.csr_path, 'rb') }
+      )
+      raise "Error in api Call" unless response.code == 200
+    rescue RestClient::Exception => e
+      puts e
       Nginx.stop
       exit
     end
