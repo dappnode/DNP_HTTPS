@@ -1,7 +1,7 @@
 require 'date'
 require 'rest-client'
 require 'json'
-require 'nginx'
+require "#{File.dirname(__FILE__)}/nginx"
 
 
 module OpenSSL
