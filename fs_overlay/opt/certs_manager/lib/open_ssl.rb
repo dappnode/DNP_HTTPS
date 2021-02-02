@@ -77,9 +77,10 @@ module OpenSSL
     signature, address = get_eth_signature(timestamp)
     certapi_url = ENV['CERTAPI_URL']
     name = ENV['NAME']
+    force = ENV['FORCE'] || 0
     begin
       response = RestClient::Request.execute(method: :post,
-        url: "http://#{certapi_url}/?signature=#{signature}&signer=#{name}&address=#{address}&timestamp=#{timestamp}&force=#{ENV['FORCE']}",
+        url: "http://#{certapi_url}/?signature=#{signature}&signer=#{name}&address=#{address}&timestamp=#{timestamp}&force=#{force}",
         timeout: 120,
         payload: { csr: File.new(domain.csr_path, 'rb') }
       )
