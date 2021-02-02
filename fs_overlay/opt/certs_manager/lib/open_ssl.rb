@@ -1,6 +1,7 @@
 require 'date'
 require 'rest-client'
 require 'json'
+require 'lib/nginx'
 
 
 module OpenSSL
@@ -82,6 +83,10 @@ module OpenSSL
       timeout: 120,
       payload: { csr: File.new(domain.csr_path, 'rb') }
     )
+    if response.code != 200
+      Nginx.stop
+      exit
+    end
     puts "Certificate signed!"
     File.write(domain.signed_cert_path, response.to_str)
   end
