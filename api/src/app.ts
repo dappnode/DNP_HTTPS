@@ -69,7 +69,7 @@ app.get(
 );
 
 app.use((_req: Request, res: Response) => {
-  res.status(404).json({ error: "Not Found" });
+  res.status(404).json({ error: "Not Found 2" });
 });
 
 // Default error handler
