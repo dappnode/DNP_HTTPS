@@ -41,7 +41,38 @@ module Commands
     end
   end
 
-  def get_dappnode_domain_once
+  def subnet_once
+    response = RestClient.get(ENV['DAPPMANAGER_INTERNAL_IP'])
+    return nil if response.code != 200
+
+    ip_arr = response.to_str.split('.')
+    ip_arr[3] = '0/24'
+
+    ip_arr.join('.')
+  rescue => e
+    puts e
+    nil
+  end
+
+  def subnet
+    puts 'Trying to determine subnet your DAppNode is in..'
+    30.times do
+      subnet = subnet_once
+      unless subnet.nil?
+        puts ' OK'
+        return subnet
+      end
+      puts '.'
+      sleep 1
+    end
+    raise('Could not determine DAppNode subnet')
+  rescue
+    puts 'An error occured during API call to DAPPMANAGER determine DAppNode domain'
+    system 's6-svscanctl -t /var/run/s6/services'
+    exit
+  end
+
+  def dappnode_domain_once
     response = RestClient.get(ENV['DAPPMANAGER_DOMAIN'])
     return response.to_str if response.code == 200
 
@@ -58,7 +89,7 @@ module Commands
     puts 'Trying to determine DAppNode domain..'
 
     30.times do
-      domain = get_dappnode_domain_once
+      domain = dappnode_domain_once
       unless domain.nil?
         File.write(fulldomain_path, domain, encoding: 'utf-8')
         puts ' OK'
@@ -68,8 +99,9 @@ module Commands
       sleep 1
     end
     raise('Could not determine domain')
-  rescue
+  rescue => e
     puts 'An error occured during API call to DAPPMANAGER determine DAppNode domain'
+    puts e
     system 's6-svscanctl -t /var/run/s6/services'
     exit
   end
