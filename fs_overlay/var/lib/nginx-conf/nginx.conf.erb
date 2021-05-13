@@ -111,6 +111,8 @@ http {
         deny all;
     <% end %>
 
+
+    <% if ENV['LOCAL_PROXYING'].downcase == 'true' && subnet != nil %>
     server {
         server_name   ~(?<domain>\w+.dappnode).local;
         listen        80;
@@ -123,6 +125,7 @@ http {
             proxy_pass http://$domain;
         }
     }
+    <% end %>
 
     include /etc/nginx/conf.d/*.conf;
 
