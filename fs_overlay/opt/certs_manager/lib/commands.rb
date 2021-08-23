@@ -56,6 +56,8 @@ module Commands
   end
 
   def self.subnet
+    return ENV['LOCAL_PROXY_ALLOWED_SUBNET'] if ENV['LOCAL_PROXY_ALLOWED_SUBNET']
+
     puts 'Trying to determine subnet your DAppNode is in..'
     30.times do
       subnet = subnet_once

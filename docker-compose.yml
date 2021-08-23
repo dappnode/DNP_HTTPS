@@ -15,6 +15,7 @@ services:
       WEBSOCKET: "true"
       PUBLIC_DOMAIN: null
       FORCE: null
+      LOCAL_PROXY_ALLOWED_SUBNET: null
     networks:
       dncore_network:
         aliases:
