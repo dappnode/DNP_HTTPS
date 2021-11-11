@@ -1,11 +1,9 @@
-FROM ruby:2.7.3-alpine AS ruby-builder
+FROM ruby:2.7.4-alpine AS ruby-builder
 
 RUN apk add --update build-base 
 
 COPY ./Gemfile .
 RUN bundle install
-
-
 
 FROM node:12-alpine AS node-builder
 
@@ -20,8 +18,6 @@ RUN yarn run build
 
 # Re-install only production for final layer
 RUN rm -rf node_modules && yarn install --production
-
-
 
 FROM nginx:1.19.6-alpine AS final-stage
 ARG TARGETPLATFORM
@@ -54,7 +50,7 @@ RUN export ARCH=$(echo $TARGETPLATFORM | cut -d'/' -f2 | sed 's/arm64/aarch64/')
     rm /etc/nginx/conf.d/default.conf && \
     apk add --update \
     # From original image
-    python2 ruby=2.7.3-r0 iproute2 apache2-utils logrotate openssl \
+    python2 ruby=2.7.4-r0 iproute2 apache2-utils logrotate openssl \
     # For Typescript app
     nodejs \
     && \

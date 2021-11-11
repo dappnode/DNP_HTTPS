@@ -15,6 +15,7 @@ services:
       WEBSOCKET: "true"
       PUBLIC_DOMAIN: null
       FORCE: null
+    dns: 172.33.1.2
     networks:
       dncore_network:
         aliases:
