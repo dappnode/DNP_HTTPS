@@ -5,8 +5,6 @@ RUN apk add --update build-base
 COPY ./Gemfile .
 RUN bundle install
 
-
-
 FROM node:12-alpine AS node-builder
 
 WORKDIR /src/api/
@@ -20,8 +18,6 @@ RUN yarn run build
 
 # Re-install only production for final layer
 RUN rm -rf node_modules && yarn install --production
-
-
 
 FROM nginx:1.19.6-alpine AS final-stage
 ARG TARGETPLATFORM
