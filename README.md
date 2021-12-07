@@ -26,7 +26,7 @@ This mode can only be used within DAppNode as a package.
 
 ## Running DAppNode on your own domain
 
-It is even possible to run DAppNode on your own domain. Your domain and all of its subdomains should resolve to the pubilc IP of the DAppNode. But please note, for every subdomain certificate is requested since it uses HTTP challenges which cannot be used for issuing wildcard certificates.
+It is even possible to run DAppNode on your own domain. Your domain and all of its subdomains should resolve to the pubilc IP of the DAppNode. But please note, for every subdomain a certificate is requested, since it uses HTTP challenges which cannot be used for issuing wildcard certificates.
 In this mode, the following environment variables have to be set:
 | Name | Value | Description |
 | -------------- | --------------------- | ------------------ |
