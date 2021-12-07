@@ -2,7 +2,7 @@
 
 This is a fork of an original [https-portal](https://github.com/SteveLTN/https-portal), with additional features intended to be used in [DAppNode](https://github.com/dappnode/DAppNode) as one of the core packages. All of its existing features should remain functional.
 
-<p align="center"><a href="#"><img width="150" title="DAPPMANAGER" src='https-portal-avatar.png' /></a></p>
+<p align="center"><a href="#"><img width="150" title="HTTPS" src='https-portal-avatar.png' /></a></p>
 
 ## Configurable forwarding
 
