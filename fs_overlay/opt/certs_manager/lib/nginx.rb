@@ -1,9 +1,6 @@
 module Nginx
   def self.setup
-    binding_hash = {
-      subnet: Commands.subnet
-    }
-    compiled_basic_config = ERBBinding.new('/var/lib/nginx-conf/nginx.conf.erb', binding_hash).compile
+    compiled_basic_config = ERBBinding.new('/var/lib/nginx-conf/nginx.conf.erb').compile
 
     File.open('/etc/nginx/nginx.conf', 'w') do |f|
       f.write compiled_basic_config

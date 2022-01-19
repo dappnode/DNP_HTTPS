@@ -116,8 +116,12 @@ http {
     server {
         server_name   dappnode.local;
         listen        80;
+        listen [::]:80;
         resolver <%= ENV['GLOBAL_RESOLVER'] %>;
-        allow <%= subnet %>;
+        allow 10.0.0.0/8;
+        allow 172.16.0.0/12;
+        allow 192.168.0.0/16;
+        allow fc00::/7;
         deny all;
         location      / {
             proxy_set_header Host $host;
