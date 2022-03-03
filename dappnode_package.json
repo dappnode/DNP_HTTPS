@@ -18,5 +18,12 @@
   },
   "bugs": {
     "url": "https://github.com/dappnode/DNP_HTTPS/issues"
-  }
+  },
+  "backup": [
+    {
+      "name": "portal-certs",
+      "path": "/var/lib/https-portal/",
+      "service": "https.dnp.dappnode.eth"
+    }
+  ]
 }
