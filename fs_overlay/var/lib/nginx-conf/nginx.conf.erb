@@ -112,7 +112,7 @@ http {
     <% end %>
 
 
-    <% if ENV['LOCAL_PROXYING'].downcase == 'true' && subnet != nil %>
+    <% if ENV['LOCAL_PROXYING'].downcase == 'true' %>
     server {
         server_name   dappnode.local;
         listen        80;
