@@ -42,34 +42,6 @@ module Commands
     end
   end
 
-  def self.subnet_once
-    response = RestClient.get(ENV['DAPPMANAGER_INTERNAL_IP'])
-    return nil if response.code != 200 || response.to_str.length < 4
-
-    ip_arr = response.to_str.split('.')
-    ip_arr[3] = '0/24'
-
-    ip_arr.join('.')
-  rescue => e
-    puts e
-    nil
-  end
-
-  def self.subnet
-    puts 'Trying to determine subnet your DAppNode is in..'
-    30.times do
-      subnet = subnet_once
-      return subnet unless subnet.nil?
-
-      puts '.'
-      sleep 1
-    end
-    nil
-  rescue
-    puts 'An error occured during API call to DAPPMANAGER determine DAppNode subnet, local proxying is disabled'
-    nil
-  end
-
   def self.dappnode_domain_once
     response = RestClient.get(ENV['DAPPMANAGER_DOMAIN'])
     return response.to_str if response.code == 200
