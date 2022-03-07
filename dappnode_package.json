@@ -19,6 +19,9 @@
   "bugs": {
     "url": "https://github.com/dappnode/DNP_HTTPS/issues"
   },
+  "requirements": {
+    "minimumDappnodeVersion": "0.2.51"
+  },
   "backup": [
     {
       "name": "portal-certs",
