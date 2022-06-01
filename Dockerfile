@@ -19,7 +19,7 @@ RUN yarn run build
 # Re-install only production for final layer
 RUN rm -rf node_modules && yarn install --production
 
-FROM nginx:1.19.6-alpine AS final-stage
+FROM nginx:1.22.0-alpine AS final-stage
 ARG TARGETPLATFORM
 
 # Delete sym links from nginx image, install logrotate
