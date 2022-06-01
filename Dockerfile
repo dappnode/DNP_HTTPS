@@ -31,7 +31,7 @@ WORKDIR /root
 ENV S6_OVERLAY_VERSION=v2.2.0.1  \
     ACME_TINY_VERSION=4.1.0  \
 # API volume to store domain .txt and .json files
-    DOMAINS_DIR=/var/run/domains.d/  \
+    DOMAINS_DIR=/var/run/domains.d/  \c
     FULLDOMAIN_PATH=/var/run/domains.d/fulldomain \
     DAPPMANAGER_SIGN=http://my.dappnode/sign  \
     DAPPMANAGER_DOMAIN=http://my.dappnode/global-envs/DOMAIN \
@@ -40,9 +40,9 @@ ENV S6_OVERLAY_VERSION=v2.2.0.1  \
     GLOBAL_RESOLVER=172.33.1.2 \
     DAPPMANAGER_INTERNAL_IP=http://my.dappnode/global-envs/INTERNAL_IP
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/$S6_OVERLAY_VERSION/s6-overlay-amd64.tar.gz /tmp/
-ADD https://github.com/just-containers/s6-overlay/releases/download/$S6_OVERLAY_VERSION/s6-overlay-aarch64.tar.gz /tmp/
-ADD https://raw.githubusercontent.com/diafygi/acme-tiny/$ACME_TINY_VERSION/acme_tiny.py /bin/acme_tiny
+RUN curl -o /tmp/s6-overlay-amd64.tar.gz https://github.com/just-containers/s6-overlay/releases/download/$S6_OVERLAY_VERSION/s6-overlay-amd64.tar.gz
+RUN curl -o /tmp/s6-overlay-aarch64.tar.gz https://github.com/just-containers/s6-overlay/releases/download/$S6_OVERLAY_VERSION/s6-overlay-aarch64.tar.gz
+RUN curl -o /bin/acme_tiny https://raw.githubusercontent.com/diafygi/acme-tiny/$ACME_TINY_VERSION/acme_tiny.py
 
 RUN export ARCH=$(echo $TARGETPLATFORM | cut -d'/' -f2 | sed 's/arm64/aarch64/') && \
     tar xzf /tmp/s6-overlay-$ARCH.tar.gz -C / && \
