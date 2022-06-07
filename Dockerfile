@@ -31,7 +31,7 @@ WORKDIR /root
 ENV S6_OVERLAY_VERSION=v2.2.0.1  \
     ACME_TINY_VERSION=4.1.0  \
 # API volume to store domain .txt and .json files
-    DOMAINS_DIR=/var/run/domains.d/  \c
+    DOMAINS_DIR=/var/run/domains.d/  \
     FULLDOMAIN_PATH=/var/run/domains.d/fulldomain \
     DAPPMANAGER_SIGN=http://my.dappnode/sign  \
     DAPPMANAGER_DOMAIN=http://my.dappnode/global-envs/DOMAIN \
