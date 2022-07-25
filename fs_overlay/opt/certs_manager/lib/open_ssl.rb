@@ -29,8 +29,8 @@ module OpenSSL
     return true if NAConfig.force_renew?
 
     if File.exist?(domain.key_path) && File.exist?(domain.signed_cert_path)
-      cert_pubkey =  `openssl x509 -pubkey -noout -in #{domain.signed_cert_path}`
-      priv_pubkey =  `openssl rsa -in #{domain.key_path} -pubout`
+      cert_pubkey =  `/usr/bin/openssl x509 -pubkey -noout -in #{domain.signed_cert_path}`
+      priv_pubkey =  `/usr/bin/openssl rsa -in #{domain.key_path} -pubout`
     else
       return true
     end
@@ -96,8 +96,8 @@ module OpenSSL
     certapi_url = ENV['CERTAPI_URL']
     force = ENV['FORCE'] || 0
     send_api_request(domain, certapi_url, signature, address, timestamp, force)
-    cert_pubkey =  `openssl x509 -pubkey -noout -in #{domain.signed_cert_path}`
-    priv_pubkey =  `openssl rsa -in #{domain.key_path} -pubout`
+    cert_pubkey =  `/usr/bin/openssl x509 -pubkey -noout -in #{domain.signed_cert_path}`
+    priv_pubkey =  `/usr/bin/openssl rsa -in #{domain.key_path} -pubout`
     unless cert_pubkey == priv_pubkey
       puts 'Keys do not match, trying forcing certification service'
       send_api_request(domain, certapi_url, signature, address, timestamp, 1)
@@ -127,7 +127,7 @@ module OpenSSL
   private
 
   def self.expires_at(pem)
-    date_str = `openssl x509 -enddate -noout -in #{pem}`.sub('notAfter=', '')
+    date_str = `/usr/bin/openssl x509 -enddate -noout -in #{pem}`.sub('notAfter=', '')
     Date.parse date_str
   end
 
