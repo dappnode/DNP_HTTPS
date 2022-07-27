@@ -69,7 +69,7 @@ class CertsManager
       ident = filename.include?('ssl') ? filename.delete_suffix('.ssl.conf') : filename.delete_suffix('.conf')
       unless names.include? ident
         puts "Deleting old #{filename} configuration..."
-        system "rm /etc/nginx/conf.d/#{filename}"
+        system "/bin/rm /etc/nginx/conf.d/#{filename}"
       end
     end
     ensure_signed(domains)
