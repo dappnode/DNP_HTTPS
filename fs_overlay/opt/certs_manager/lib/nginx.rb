@@ -24,15 +24,15 @@ module Nginx
   end
 
   def self.start
-    system 'nginx -q'
+    system '/usr/sbin/nginx -q'
   end
 
   def self.reload
-    system 'nginx -s reload'
+    system '/usr/sbin/nginx -s reload'
   end
 
   def self.stop
-    system 'nginx -s stop'
+    system '/usr/sbin/nginx -s stop'
   end
 
   private

@@ -24,7 +24,7 @@ module ACME
       puts "Signing certificates from #{domain.ca} ..."
 
       command = <<-EOC
-        acme_tiny \
+          /bin/acme_tiny \
           --account-key #{NAConfig.portal_base_dir}/account.key \
           --csr #{domain.csr_path} \
           --acme-dir /var/www/default/challenges/ \

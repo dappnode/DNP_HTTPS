@@ -5,11 +5,11 @@ module Commands
 
   def chain_certs(domain)
     # Keeping it for backward compatibility
-    system "test ! -e #{domain.chained_cert_path} && ln -s #{domain.signed_cert_path} #{domain.chained_cert_path}"
+    system "/usr/bin/test ! -e #{domain.chained_cert_path} && ln -s #{domain.signed_cert_path} #{domain.chained_cert_path}"
   end
 
   def mkdir(domain)
-    system "mkdir -p #{domain.dir}"
+    system "/bin/mkdir -p #{domain.dir}"
   end
 
   def add_dockerhost_to_hosts
@@ -23,7 +23,7 @@ module Commands
   def generate_ht_access(domains)
     domains.each do |domain|
       if domain.basic_auth_enabled?
-        system "htpasswd -bc #{domain.htaccess_path} #{domain.basic_auth_username} #{domain.basic_auth_password}"
+        system "/usr/bin/htpasswd -bc #{domain.htaccess_path} #{domain.basic_auth_username} #{domain.basic_auth_password}"
       end
     end
   end
