@@ -1,6 +1,6 @@
 module Nginx
   def self.setup
-    compiled_basic_config = ERBBinding.new('/var/lib/nginx-conf/nginx.conf.erb').compile
+    compiled_basic_config = ERBBinding.new('/var/lib/nginx-conf/nginx.conf.erb', {}).compile
 
     File.open('/etc/nginx/nginx.conf', 'w') do |f|
       f.write compiled_basic_config
@@ -24,15 +24,15 @@ module Nginx
   end
 
   def self.start
-    system 'nginx -q'
+    system '/usr/sbin/nginx -q'
   end
 
   def self.reload
-    system 'nginx -s reload'
+    system '/usr/sbin/nginx -s reload'
   end
 
   def self.stop
-    system 'nginx -s stop'
+    system '/usr/sbin/nginx -s stop'
   end
 
   private
