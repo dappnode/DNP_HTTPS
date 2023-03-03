@@ -2,28 +2,27 @@ version: "3.5"
 services:
   https.dnp.dappnode.eth:
     build: .
-    image: "https.dnp.dappnode.eth:0.1.1"
+    image: "https.dnp.dappnode.eth:0.2.0"
     container_name: DAppNodeCore-https.dnp.dappnode.eth
     restart: always
     ports:
       - "80:80"
       - "443:443"
     environment:
-      STAGE: production
       CERTAPI_URL: "ns.dappnode.io:5000"
       LOCAL_PROXYING: "true"
-      LOCAL_PROXY_DOMAIN: "dappnode"
       WEBSOCKET: "true"
-      PUBLIC_DOMAIN: null
+      MAPPING_EXTERNAL_BY_DEFAULT: "true"
       FORCE: null
+      PRIVATE_SUBNET: null
     dns: 172.33.1.2
     networks:
       dncore_network:
         aliases:
           - https.dappnode
     volumes:
-      - "portal-certs:/var/lib/https-portal/"
-      - "portal-data:/var/run/domains.d/"
+      - "portal-certs:/etc/ssl/dappnode"
+      - "portal-data:/usr/src/app/domains"
 volumes:
   portal-certs: {}
   portal-data: {}

@@ -1,8 +1,14 @@
 {
   "0.1.1": {
-    "hash": "/ipfs/QmTDtAF9P9ZX5eFV11W5vi6W411u3mX5F6hnsYSn1AwjeU",
+    "hash": "/ipfs/Qmbobj8bDkd8oH1yyW8Ra9r7rHbWzKF79jNBDMH45pSKAG",
     "uploadedTo": {
-      "dappnode": "Thu, 10 Jun 2021 10:01:46 GMT"
+      "remote": "Wed, 21 Dec 2022 00:46:59 GMT"
+    }
+  },
+  "0.2.0": {
+    "hash": "/ipfs/QmU1KRM9s2Y6GrJXHE1Wzs1ZyfUqoWYe8xnApJB8uZKjwX",
+    "uploadedTo": {
+      "remote": "Wed, 15 Feb 2023 08:54:51 GMT"
     }
   }
 }

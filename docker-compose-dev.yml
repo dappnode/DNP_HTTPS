@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  https.dnp.dappnode.eth:
+    build: .
+    image: "https.dnp.dappnode.eth:0.1.1"
+    container_name: DAppNodeCore-https.dnp.dappnode.eth
+    restart: always
+    environment:
+      STAGE: production
+      CERTAPI_URL: "ns.dappnode.io:5000"
+      LOCAL_PROXYING: "false"
+      LOCAL_PROXY_DOMAIN: dappnode
+      MAPPING_EXTERNAL_BY_DEFAULT: "true"
+      WEBSOCKET: "true"
+      FORCE: null
+      _DAPPNODE_GLOBAL_DOMAIN: "xxxxx.dyndns.dappnode.io"
+
