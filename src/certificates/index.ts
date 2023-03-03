@@ -8,7 +8,7 @@ import {
   shouldRenew,
 } from "./openssl";
 
-export async function ensureValidCert(createIfNotExists: boolean = false) {
+export async function ensureValidCert(createIfNotExists = false) {
   if (await shouldRenew(createIfNotExists)) {
     try {
       await signCert();

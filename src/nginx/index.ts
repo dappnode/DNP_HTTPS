@@ -1,4 +1,3 @@
-import ejs from "ejs";
 import { DomainMapping } from "../types";
 import fs from "fs";
 import path from "path";
@@ -30,7 +29,7 @@ export async function updateServerConfigs(
   await deleteOldConfig(mappings);
 
   const dirContent = await fs.readdirSync(config.serverConfigDir);
-  var checkedCert = false;
+  let checkedCert = false;
   for (const mapping of mappings) {
     const filename = `${mapping.from}.ssl.conf`;
     if (dirContent.find((x) => x === filename) !== undefined && !force)

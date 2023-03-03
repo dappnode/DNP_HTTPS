@@ -2,7 +2,6 @@ import { config } from "../config";
 import fs from "fs";
 import axios from "axios";
 import shell from "../utils/shell";
-import { shouldRenew } from "./openssl";
 
 async function getEthSignature(timestamp: number): Promise<[string, string]> {
   try {

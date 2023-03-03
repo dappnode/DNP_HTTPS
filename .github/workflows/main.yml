@@ -10,9 +10,6 @@ on:
 
 jobs:
   unit-test:
-    defaults:
-      run:
-        working-directory: api
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
@@ -20,7 +17,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: "10.x"
+          node-version: "19.x"
       - run: yarn
       - run: yarn build
       - run: yarn lint

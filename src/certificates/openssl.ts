@@ -25,7 +25,7 @@ async function generateDHParam() {
   if (fs.existsSync(config.dhparamPath) && isDHParamValid()) {
     console.log("Valid, skipping");
     return;
-  };
+  }
   await shell(`openssl dhparam -out ${config.dhparamPath} ${keyLength}`);
 }
 
@@ -33,7 +33,7 @@ async function generateDomainKey() {
   if (fs.existsSync(config.keyPath)) {
     console.log("Exists, skipping");
     return;
-  };
+  }
   await shell(`openssl genrsa ${keyLength} > ${config.keyPath}`);
 }
 
@@ -41,7 +41,7 @@ async function createCSR() {
   if (fs.existsSync(config.csrPath)) {
     console.log("Exists, skipping");
     return;
-  };
+  }
   const publicDomain = process.env._DAPPNODE_GLOBAL_DOMAIN;
   await shell(
     `openssl req -new -sha256 -key ${config.keyPath} -subj '/CN=${publicDomain}' -addext 'subjectAltName = DNS:*.${publicDomain}' > ${config.csrPath}`

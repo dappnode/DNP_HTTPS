@@ -5,10 +5,10 @@ import { updateServerConfigs } from "../../nginx";
 const maxRetries = 3;
 
 export async function reconfigureNGINX(
-  force: boolean = false
+  force = false
 ): Promise<boolean> {
   await updateServerConfigs(entriesDb.read(), force);
-  for (var i = 0; i < maxRetries; i++) {
+  for (let i = 0; i < maxRetries; i++) {
     try {
       await shell("nginx -s reload");
       console.log("Reconfigured NGINX");
