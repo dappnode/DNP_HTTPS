@@ -1,0 +1,23 @@
+<% if(process.env.LOCAL_PROXYING === 'true') { %>
+server {
+    server_name   <%-process.env.LOCAL_PROXY_DOMAIN%>.local;
+    listen        80;
+    listen [::]:80;
+    resolver <%- process.env.GLOBAL_RESOLVER %>;
+<% if (process.env.PRIVATE_SUBNET) { %> 
+    allow <%- process.env.PRIVATE_SUBNET %>;
+<% } else { %>
+    allow 10.0.0.0/8;
+    allow 172.16.0.0/12;
+    allow 192.168.0.0/16;
+    allow fc00::/7;
+    allow fe80::/10;
+<% } %> 
+    deny all;
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass http://my.dappnode;
+    }
+}
+<% } %>

@@ -1,0 +1,81 @@
+# This file will be compiled into /etc/nginx/nginx.conf
+
+user  nginx;
+worker_processes  <%- process.env.WORKER_PROCESSES || 1 %>;
+
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  <%- process.env.WORKER_CONNECTIONS || 1024 %>;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    <% if (process.env.ACCESS_LOG_INCLUDE_HOST == 'on'){ %>
+    log_format  main  '$host:$server_port $remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    <% } else {%> 
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    <% } %>
+    <% if (process.env.WEBSOCKET && process.env.WEBSOCKET.toLowerCase() === 'true') { %>
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+    }
+    <% } %>
+
+    sendfile        on;
+    keepalive_timeout  <%- process.env.KEEPALIVE_TIMEOUT || 65 %>;
+
+    <% if(process.env.GZIP !== 'off') { %>
+        gzip on;
+        gzip_disable "msie6";
+        gzip_vary on;
+        gzip_proxied any;
+        gzip_comp_level 6;
+        gzip_buffers 16 8k;
+        gzip_http_version 1.1;
+        gzip_types application/javascript application/json application/rss+xml application/vnd.ms-fontobject application/x-font application/x-font-opentype application/x-font-otf application/x-font-truetype application/x-font-ttf application/x-javascript application/xhtml+xml application/xml font/opentype font/otf font/ttf image/svg+xml image/x-icon text/css text/javascript text/plain text/xml;
+    <% } %>
+
+    server_tokens <%- process.env.SERVER_TOKENS || 'off' %>;
+    server_names_hash_max_size <%- process.env.SERVER_NAMES_HASH_MAX_SIZE || 4096 %>;
+    server_names_hash_bucket_size <%- process.env.SERVER_NAMES_HASH_BUCKET_SIZE || 128 %>;
+
+    <% if (process.env.CLIENT_MAX_BODY_SIZE) { %>
+    client_max_body_size <%- process.env.CLIENT_MAX_BODY_SIZE %>;
+    <% } %>
+    <% if (process.env.PROXY_BUFFERS){ %>
+    proxy_buffers <%- process.env.PROXY_BUFFERS %>;
+    <%} if (process.env.PROXY_BUFFER_SIZE) {%>
+    proxy_buffer_size <%- process.env.PROXY_BUFFER_SIZE %>;
+    <%} if (process.env.RESOLVER) { %>
+    resolver <%- process.env.RESOLVER %>;
+    <% } if (process.env.PROXY_CONNECT_TIMEOUT) { %>
+    proxy_connect_timeout <%- process.env.PROXY_CONNECT_TIMEOUT %>;
+    <% } if (process.env.PROXY_SEND_TIMEOUT) { %>
+    proxy_send_timeout <%- process.env.PROXY_SEND_TIMEOUT %>;
+    <% } if (process.env.PROXY_READ_TIMEOUT) { %>
+    proxy_read_timeout <%- process.env.PROXY_READ_TIMEOUT %>;
+    <% } %>
+
+    include /etc/nginx/conf.d/*.conf;
+
+    # Prevent Nginx from leaking other server configurations on the same machine
+    server {
+        listen      80 default_server;
+        listen      443 ssl default_server;
+
+        ssl_certificate <%- data.dummyCert %>;
+        ssl_certificate_key <%- data.dummyKey %>;
+        server_name _;
+        return      444;
+    }
+}
+

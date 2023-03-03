@@ -1,8 +1,3 @@
-test/
-spec/
-examples/
-api/node_modules
-api/dist
-api/.env
-api/.git
-Dockerfile
+build
+build_*
+node_modules

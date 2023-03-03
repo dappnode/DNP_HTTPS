@@ -1,32 +1,39 @@
 {
-  "name": "https.dnp.dappnode.eth",
-  "version": "0.1.1",
-  "description": "HTTPS portal for DAppNode",
-  "type": "dncore",
-  "author": "DAppNode Association <admin@dappnode.io> (https://github.com/dappnode)",
-  "contributors": ["Shardlabs <info@shardlabs.io> (https://shardlabs.io/)"],
-  "architectures": ["linux/amd64", "linux/arm64"],
-  "categories": ["Developer tools"],
-  "keywords": ["DAppNodeCore"],
-  "license": "GPL-3.0",
-  "links": {
-    "homepage": "https://github.com/dappnode/DNP_HTTPS"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dappnode/DNP_HTTPS"
-  },
-  "bugs": {
-    "url": "https://github.com/dappnode/DNP_HTTPS/issues"
-  },
-  "requirements": {
-    "minimumDappnodeVersion": "0.2.51"
-  },
-  "backup": [
-    {
-      "name": "portal-certs",
-      "path": "/var/lib/https-portal/",
-      "service": "https.dnp.dappnode.eth"
-    }
-  ]
-}
+    "name": "https.dnp.dappnode.eth",
+    "version": "0.2.0",
+    "description": "HTTPS portal for DAppNode",
+    "type": "dncore",
+    "author": "DAppNode Association <admin@dappnode.io> (https://github.com/dappnode)",
+    "contributors": ["Shardlabs <info@shardlabs.io> (https://shardlabs.io/)"],
+    "architectures": ["linux/amd64"],
+    "categories": ["Developer tools"],
+    "keywords": ["DAppNodeCore"],
+    "license": "GPL-3.0",
+    "links": {
+      "homepage": "https://github.com/dappnode/DNP_HTTPS"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dappnode/DNP_HTTPS"
+    },
+    "bugs": {
+      "url": "https://github.com/dappnode/DNP_HTTPS/issues"
+    },
+    "requirements": {
+      "minimumDappnodeVersion": "0.2.51"
+    },
+    "backup": [
+      {
+        "name": "portal-certs",
+        "path": "/var/lib/https-portal/",
+        "service": "https.dnp.dappnode.eth"
+      }
+    ],
+    "globalEnvs": [
+      {
+        "envs": ["DOMAIN"],
+        "services": ["https.dnp.dappnode.eth"]
+      }
+    ]
+  }
+  
