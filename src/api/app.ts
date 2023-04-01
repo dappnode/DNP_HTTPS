@@ -14,7 +14,7 @@ app.get(
   "/add",
   asyncHandler(async (req) => {
     const from = await sanitizeFrom(req.query.from as string);
-    const to = await sanitizeTo(req.query.to as string);
+    const to = sanitizeTo(req.query.to as string);
     const external = sanitizeExternal(req.query.external as string); //true if not set, we should swap this, but it left like this for backwards compatibility
 
     const entries = entriesDb.read();

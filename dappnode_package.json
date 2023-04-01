@@ -25,7 +25,12 @@
     "backup": [
       {
         "name": "portal-certs",
-        "path": "/var/lib/https-portal/",
+        "path": "/etc/ssl/dappnode/wildcard_certs/",
+        "service": "https.dnp.dappnode.eth"
+      },
+      {
+        "name": "portal-data",
+        "path": "/usr/src/app/domains",
         "service": "https.dnp.dappnode.eth"
       }
     ],

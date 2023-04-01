@@ -4,9 +4,7 @@ import { updateServerConfigs } from "../../nginx";
 
 const maxRetries = 3;
 
-export async function reconfigureNGINX(
-  force = false
-): Promise<boolean> {
+export async function reconfigureNGINX(force = false): Promise<boolean> {
   await updateServerConfigs(entriesDb.read(), force);
   for (let i = 0; i < maxRetries; i++) {
     try {
@@ -14,7 +12,7 @@ export async function reconfigureNGINX(
       console.log("Reconfigured NGINX");
       return true;
     } catch (e) {
-      console.log("Failed to reconfigure NGINX");
+      console.log("Failed to reconfigure NGINX", e);
     }
     await new Promise((r) => setTimeout(r, 3000));
   }

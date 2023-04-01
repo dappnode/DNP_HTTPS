@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Internal Server Error</title>
+    <style>
+        :root {
+            --dappnode-white-color: #fff;
+            --dappnode-strong-main-color: #00b1f4;
+            --dappnode-darker-main-color: #007dfc;
+            --dappnode-shadow-main-color: #06d4e7;
+            --dappnode-light-main-color: #a0bdbb;
+            --dappnode-gray-main-color: #748888;
+            --dappnode-links-color: #00b1f4;
+            --dappnode-links-darker-color: #007dfc;
+            --dappnode-complimentary-color: #bc2f39;
+
+        --danger-color: var(--dappnode-complimentary-color);
+        --warning-color: #ffcc00;
+        --success-color: var(--dappnode-strong-main-color);
+        --success-green-color: #34a853;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: var(--color-light-background-main);
+        color: var(--light-text-color);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .logo {
+        width: 200px;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    a {
+        color: var(--dappnode-links-color);
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: var(--dappnode-links-darker-color);
+    }
+
+    .error-code {
+        font-size: 5rem;
+        font-weight: bold;
+        color: var(--danger-color);
+    }
+
+    ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+</style>
+</head>
+<body>
+    <div class="error-container">
+    <img class="logo" src="https://raw.githubusercontent.com/dappnode/DNP_DAPPMANAGER/develop/packages/admin-ui/src/img/dappnode-logo-wide-min.png" alt="Logo">
+
+        <h1>Whops!</h1>
+        <h2>Something went wrong with your mapping.</h2>
+        <p>To troubleshoot try these options:</p>
+        <ul>
+            <li>Make sure that package you're trying to connect to is installed and running</li>
+            <li>If you added package through package configuration tab, make sure that you entered target service and port correctly</li>
+            <li>If nothing from above works, go to System > Network and try clicking "Recreate" button</li>
+        </ul>
+</div>
+</body>
+</html>

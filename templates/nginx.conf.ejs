@@ -51,10 +51,12 @@ http {
     <% if (process.env.CLIENT_MAX_BODY_SIZE) { %>
     client_max_body_size <%- process.env.CLIENT_MAX_BODY_SIZE %>;
     <% } %>
-    <% if (process.env.PROXY_BUFFERS){ %>
+    <% if (process.env.PROXY_BUFFERS && process.env.BUFFERING !== 'off'){ %>
     proxy_buffers <%- process.env.PROXY_BUFFERS %>;
-    <%} if (process.env.PROXY_BUFFER_SIZE) {%>
+    <%} if (process.env.PROXY_BUFFER_SIZE && process.env.BUFFERING !== 'off') {%>
     proxy_buffer_size <%- process.env.PROXY_BUFFER_SIZE %>;
+    <%} if (process.env.PROXY_BUFFERING === 'off') {%>
+    proxy_buffering off;
     <%} if (process.env.RESOLVER) { %>
     resolver <%- process.env.RESOLVER %>;
     <% } if (process.env.PROXY_CONNECT_TIMEOUT) { %>

@@ -27,7 +27,7 @@ export default async function initCertificateProvider() {
     await generateDummyCert();
     console.log("- Generating domain key");
     await generateDomainKey();
-    console.log("- Generating DH parameters");
+    console.log("- Generating DH parameters (this may take a while)");
     await generateDHParam();
     console.log("- Creating Certificate signing request");
     await createCSR();

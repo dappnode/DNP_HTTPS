@@ -21,6 +21,8 @@ ENV DOMAINS_DIR=/usr/src/app/domains  \
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 COPY ./templates ./templates
+COPY ./snippets /etc/nginx/snippets
+COPY ./static /usr/share/nginx/html
 RUN yarn --production
 
 COPY --from=builder /usr/src/app/build/ ./build/
