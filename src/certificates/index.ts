@@ -10,11 +10,7 @@ import {
 
 export async function ensureValidCert(createIfNotExists = false) {
   if (await shouldRenew(createIfNotExists)) {
-    try {
-      await signCert();
-    } catch (e) {
-      console.log(e);
-    }
+    await signCert();
   } else {
     console.log("Certificate valid or not necessary, skip signing");
   }
@@ -37,7 +33,13 @@ export default async function initCertificateProvider() {
   }
 
   console.log("Setting cronjob for cert updates");
-  setInterval(ensureValidCert, config.certCheckInterval);
+  setInterval(async () => {
+    try {
+      await ensureValidCert();
+    } catch (e) {
+      console.warn(e);
+    }
+  }, config.certCheckInterval);
 }
 
 async function signCert() {

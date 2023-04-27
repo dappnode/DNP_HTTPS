@@ -4,18 +4,14 @@ import axios from "axios";
 import shell from "../utils/shell";
 
 async function getEthSignature(timestamp: number): Promise<[string, string]> {
-  try {
-    const response = await axios.post(
-      process.env.DAPPMANAGER_SIGN,
-      timestamp.toString(),
-      {
-        headers: { "Content-Type": "text/plain" },
-      }
-    );
-    return [response.data.signature, response.data.address];
-  } catch (e) {
-    console.warn(e);
-  }
+  const response = await axios.post(
+    process.env.DAPPMANAGER_SIGN,
+    timestamp.toString(),
+    {
+      headers: { "Content-Type": "text/plain" },
+    }
+  );
+  return [response.data.signature, response.data.address];
 }
 
 async function executeAPISign(
