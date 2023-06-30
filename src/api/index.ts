@@ -1,4 +1,4 @@
-import { getApp } from "./app";
+import { getHttpsApi } from "./app";
 import { AddressInfo } from "net";
 import { reconfigureNGINX } from "./utils/nginx";
 import { entriesDb } from "./db";
@@ -18,8 +18,8 @@ function dbMigration() {
 export default async function startAPI(dappnodeDomain: string) {
   dbMigration();
   await reconfigureNGINX(dappnodeDomain);
-  const app = getApp(dappnodeDomain);
-  const server = app.listen(5000, "0.0.0.0", () => {
+  const httpsApi = getHttpsApi(dappnodeDomain);
+  const server = httpsApi.listen(5000, "0.0.0.0", () => {
     const { port, address } = server.address() as AddressInfo;
     console.log("Server listening on:", "http://" + address + ":" + port);
   });

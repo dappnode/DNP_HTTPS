@@ -11,7 +11,7 @@ import { reconfigureNGINX } from "./utils/nginx";
 import { sanitizeExternal, sanitizeFrom, sanitizeTo } from "./utils/sanitize";
 import { config } from "../config";
 
-function getApp(dappnodeDomain: string): Express {
+function getHttpsApi(dappnodeDomain: string): Express {
   const app = express();
 
   app.use(morgan("tiny"));
@@ -94,4 +94,4 @@ function getApp(dappnodeDomain: string): Express {
   return app;
 }
 
-export { getApp };
+export { getHttpsApi };
