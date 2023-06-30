@@ -23,7 +23,8 @@ async function deleteOldConfig(mappings: DomainMapping[]): Promise<void> {
 
 export async function updateServerConfigs(
   mappings: DomainMapping[],
-  force: boolean
+  force: boolean,
+  dappnodeDomain: string
 ) {
   console.log(" *** Updating mappings *** ");
   await deleteOldConfig(mappings);
@@ -41,7 +42,7 @@ export async function updateServerConfigs(
     }
     await fs.writeFileSync(
       path.join(config.serverConfigDir, filename),
-      await generateServerConfig(mapping)
+      await generateServerConfig(mapping, dappnodeDomain)
     );
   }
 }

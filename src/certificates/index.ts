@@ -16,7 +16,7 @@ export async function ensureValidCert(createIfNotExists = false) {
   }
 }
 
-export default async function initCertificateProvider() {
+export default async function initCertificateProvider(dappnodeDomain: string) {
   console.log("Certificates provider initializing");
   try {
     console.log("- Creating Dummy certificate");
@@ -26,7 +26,7 @@ export default async function initCertificateProvider() {
     console.log("- Generating DH parameters (this may take a while)");
     await generateDHParam();
     console.log("- Creating Certificate signing request");
-    await createCSR();
+    await createCSR(dappnodeDomain);
     console.log("Certificates provider initialized");
   } catch (e) {
     console.log(e);
