@@ -11,6 +11,9 @@ async function main() {
     ? process.env._DAPPNODE_GLOBAL_DOMAIN
     : await retrieveDappnodeDomain();
 
+  if (process.env._DAPPNODE_GLOBAL_DOMAIN)
+    console.log("Domain retrieved from environment:", dappnodeDomain);
+
   if (!fs.existsSync(config.serverConfigDir)) {
     fs.mkdirSync(config.serverConfigDir);
   }
