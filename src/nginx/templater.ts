@@ -5,13 +5,14 @@ import { config } from "../config";
 import { DomainMapping } from "../types";
 
 export async function generateServerConfig(
-  mapping: DomainMapping
+  mapping: DomainMapping,
+  dappnodeDomain: string
 ): Promise<string> {
   const data = {
     certPath: config.certPath,
     keyPath: config.keyPath,
     dhparamPath: config.dhparamPath,
-    domain: `${mapping.from}.${process.env._DAPPNODE_GLOBAL_DOMAIN}`,
+    domain: `${mapping.from}.${dappnodeDomain}`,
     target: mapping.to,
     external: mapping.external,
   };

@@ -37,14 +37,13 @@ async function generateDomainKey() {
   await shell(`openssl genrsa ${keyLength} > ${config.keyPath}`);
 }
 
-async function createCSR() {
+async function createCSR(dappnodeDomain: string) {
   if (fs.existsSync(config.csrPath)) {
     console.log("Exists, skipping");
     return;
   }
-  const publicDomain = process.env._DAPPNODE_GLOBAL_DOMAIN;
   await shell(
-    `openssl req -new -sha256 -key ${config.keyPath} -subj '/CN=${publicDomain}' -addext 'subjectAltName = DNS:*.${publicDomain}' > ${config.csrPath}`
+    `openssl req -new -sha256 -key ${config.keyPath} -subj '/CN=${dappnodeDomain}' -addext 'subjectAltName = DNS:*.${dappnodeDomain}' > ${config.csrPath}`
   );
 }
 
