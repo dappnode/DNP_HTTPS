@@ -39,9 +39,11 @@ async function generateDomainKey() {
 
 async function createCSR(dappnodeDomain: string) {
   if (fs.existsSync(config.csrPath)) {
-    console.log("Exists, skipping");
-    return;
+    console.log("CSR exists. Overwriting it...");
+  } else {
+    console.log("CSR does not exist. Creating it...");
   }
+
   await shell(
     `openssl req -new -sha256 -key ${config.keyPath} -subj '/CN=${dappnodeDomain}' -addext 'subjectAltName = DNS:*.${dappnodeDomain}' > ${config.csrPath}`
   );
