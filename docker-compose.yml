@@ -1,6 +1,6 @@
 version: "3.5"
 services:
-  https.dnp.dappnode.eth:
+  https:
     build: .
     image: "https.dnp.dappnode.eth:0.2.0"
     container_name: DAppNodeCore-https.dnp.dappnode.eth
@@ -22,6 +22,7 @@ services:
       dncore_network:
         aliases:
           - https.dappnode
+          - https.https.dappnode
     volumes:
       - "portal-certs:/etc/ssl/dappnode"
       - "portal-data:/usr/src/app/domains"
