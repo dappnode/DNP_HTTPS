@@ -17,7 +17,6 @@ services:
       PRIVATE_SUBNET: null
       CLIENT_MAX_BODY_SIZE: null
       PROXY_BUFFERING: null
-    dns: 172.33.1.2
     networks:
       dncore_network:
         aliases:
