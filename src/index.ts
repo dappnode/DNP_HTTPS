@@ -6,6 +6,15 @@ import fs from "fs";
 import { config } from "./config";
 import axios from "axios";
 
+const dappmanagerAliases = [
+  "my.dappnode",
+  "dappmanager.dappnode",
+  "dappmanager.dnp.dappnode.eth.dappmanager.dappnode"
+];
+
+const RETRY_DELAY = 5000;
+const MAX_RETRIES = 50;
+
 async function main() {
   const dappnodeDomain = process.env._DAPPNODE_GLOBAL_DOMAIN
     ? process.env._DAPPNODE_GLOBAL_DOMAIN
@@ -29,23 +38,35 @@ async function main() {
 }
 
 async function retrieveDappnodeDomain(): Promise<string> {
-  while (true) {
-    try {
-      const response = await axios.get(
-        "http://my.dappnode/global-envs/DOMAIN/"
-      );
-      const domain: string = response.data;
-      console.log("Domain retrieved from Dappmanager API:", domain);
-      return domain; // Return the domain once it is available
-    } catch (error) {
-      console.error(
-        "Error: Dappnode domain could not be retrieved from dappmanager API",
-        error.message
-      );
-      // Retry after 5s delay
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+  let retries = 0;
+
+  while (retries < MAX_RETRIES) {
+    for (const alias of dappmanagerAliases) {
+      const domain = await fetchDomainFromDappmanagerAlias(alias);
+
+      if (domain) return domain;
     }
+
+    retries++;
+    console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
+    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
   }
+
+  throw new Error("Max retries reached. Dappnode domain could not be retrieved from dappmanager API.");
 }
+
+async function fetchDomainFromDappmanagerAlias(alias: string): Promise<string | null> {
+  try {
+    const response = await axios.get(`http://${alias}/global-envs/DOMAIN/`);
+    if (response.data) {
+      console.log("Domain retrieved from Dappmanager API:", response.data);
+      return response.data;
+    }
+  } catch (error) {
+    console.error(`Error fetching domain from alias ${alias}:`, error.message);
+  }
+  return null;
+}
+
 
 main();
