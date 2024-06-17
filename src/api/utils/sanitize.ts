@@ -37,6 +37,13 @@ export function sanitizeExternal(external: string): boolean {
   return false;
 }
 
+export function sanitizeAuth(auth: string): string {
+  if (!auth) {
+    return "";
+  }
+  return auth;
+}
+
 function assertIsSubdomain(subdomain: string): void {
   if (subdomain.includes(".")) {
     throw Error("Must not be FQDN nor contain any subdomains");

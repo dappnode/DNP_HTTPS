@@ -49,6 +49,11 @@ server {
 
     location / {
 
+        <% if(data.auth) { %>
+        auth_basic           "Creds Required";
+        auth_basic_user_file <%- data.domain %>.auth;
+        <% } %>
+
         set $backend http://<%-data.target %>;
         proxy_pass $backend;
         proxy_set_header Host $host;

@@ -8,7 +8,7 @@ import morgan from "morgan";
 import { HttpError, BadRequestError, asyncHandler } from "./utils/asyncHandler";
 import { entriesDb } from "./db";
 import { reconfigureNGINX } from "./utils/nginx";
-import { sanitizeExternal, sanitizeFrom, sanitizeTo } from "./utils/sanitize";
+import { sanitizeAuth, sanitizeExternal, sanitizeFrom, sanitizeTo } from "./utils/sanitize";
 import { config } from "../config";
 
 function getHttpsApi(dappnodeDomain: string): Express {
@@ -22,6 +22,7 @@ function getHttpsApi(dappnodeDomain: string): Express {
       const from = await sanitizeFrom(req.query.from as string);
       const to = sanitizeTo(req.query.to as string);
       const external = sanitizeExternal(req.query.external as string); //true if not set, we should swap this, but it left like this for backwards compatibility
+      const auth = sanitizeAuth(req.query.auth as string);
 
       const entries = entriesDb.read();
       if (entries.some((entry) => entry.from === from)) {
@@ -38,7 +39,7 @@ function getHttpsApi(dappnodeDomain: string): Express {
         );
       }
 
-      entries.push({ from, to, external });
+      entries.push({ from, to, external, auth });
       entriesDb.write(entries);
 
       const reconfigured = await reconfigureNGINX(dappnodeDomain);
