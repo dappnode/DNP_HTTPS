@@ -38,10 +38,15 @@ export function sanitizeExternal(external: string): boolean {
 }
 
 export function sanitizeAuth(auth: string): string {
-  if (!auth) {
+  if (!auth || typeof auth !== "string") {
     return "";
   }
-  return auth;
+  const parts = auth.split(":");
+  if (parts.length !== 2 || !parts[0] || !parts[1]) {
+    throw new BadRequestError("Invalid auth format. Expected 'user:password'.");
+  }
+  const [user, password] = parts.map(part => part.trim());
+  return `${user}:${password}`;
 }
 
 function assertIsSubdomain(subdomain: string): void {
