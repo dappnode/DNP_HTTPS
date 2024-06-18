@@ -15,7 +15,7 @@ export async function generateServerConfig(
     domain: `${mapping.from}.${dappnodeDomain}`,
     target: mapping.to,
     external: mapping.external,
-    auth: Boolean(mapping.auth)
+    auth: Boolean(mapping.auth),
   };
   return await ejs.renderFile("./templates/default.ssl.conf.ejs", {
     data: data,

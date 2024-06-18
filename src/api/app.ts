@@ -8,7 +8,12 @@ import morgan from "morgan";
 import { HttpError, BadRequestError, asyncHandler } from "./utils/asyncHandler";
 import { entriesDb } from "./db";
 import { reconfigureNGINX } from "./utils/nginx";
-import { sanitizeAuth, sanitizeExternal, sanitizeFrom, sanitizeTo } from "./utils/sanitize";
+import {
+  sanitizeAuth,
+  sanitizeExternal,
+  sanitizeFrom,
+  sanitizeTo,
+} from "./utils/sanitize";
 import { config } from "../config";
 
 function getHttpsApi(dappnodeDomain: string): Express {

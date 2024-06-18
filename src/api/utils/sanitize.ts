@@ -45,7 +45,7 @@ export function sanitizeAuth(auth: string): string {
   if (parts.length !== 2 || !parts[0] || !parts[1]) {
     throw new BadRequestError("Invalid auth format. Expected 'user:password'.");
   }
-  const [user, password] = parts.map(part => part.trim());
+  const [user, password] = parts.map((part) => part.trim());
   return `${user}:${password}`;
 }
 

@@ -51,7 +51,9 @@ server {
 
         <% if(data.auth) { %>
         auth_basic           "Creds Required";
-        auth_basic_user_file <%- data.domain %>.auth;
+        auth_basic_user_file conf.d/<%- data.domain.split('.')[0] %>.auth;
+        proxy_set_header Authorization "";
+
         <% } %>
 
         set $backend http://<%-data.target %>;
