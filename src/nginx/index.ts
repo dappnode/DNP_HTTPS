@@ -40,7 +40,7 @@ export async function updateServerConfigs(
       await ensureValidCert(true);
       checkedCert = true;
     }
-    if(mapping.auth.length > 0) { 
+    if(Boolean(mapping.auth)) { 
       console.log(` *-> Adding auth <-*`);
       await fs.writeFileSync(
         path.join(config.serverConfigDir, `${mapping.from}.${dappnodeDomain}.auth`),
