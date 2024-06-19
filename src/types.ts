@@ -11,4 +11,8 @@ export interface DomainMapping {
    * Indicates whether mapping should made public
    */
   external?: boolean;
+  /**
+   * Optional auth string
+   */
+  auth?: string;
 }
