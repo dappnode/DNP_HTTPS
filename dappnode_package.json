@@ -20,7 +20,7 @@
       "url": "https://github.com/dappnode/DNP_HTTPS/issues"
     },
     "requirements": {
-      "minimumDappnodeVersion": "0.2.51"
+      "minimumDappnodeVersion": "0.2.95"
     },
     "backup": [
       {
