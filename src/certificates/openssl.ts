@@ -5,9 +5,9 @@ import fs from "fs";
 
 const keyLength = 2048;
 
-async function isDHParamValid() {
+async function isDHParamValid(dhparamPath: string) {
   try {
-    await shell(`openssl dhparam -check < ${path}`);
+    await shell(`openssl dhparam -check < ${dhparamPath}`);
     return true;
   } catch {
     return false;
@@ -22,7 +22,7 @@ async function certExpiringDate(pem: string) {
 }
 
 async function generateDHParam() {
-  if (fs.existsSync(config.dhparamPath) && isDHParamValid()) {
+  if (fs.existsSync(config.dhparamPath) && isDHParamValid(config.dhparamPath)) {
     console.log("Valid, skipping");
     return;
   }
