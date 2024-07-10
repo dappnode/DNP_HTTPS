@@ -7,7 +7,7 @@ const keyLength = 2048;
 
 async function isDHParamValid() {
   try {
-    await shell(`openssl dhparam -check < ${path}`);
+    await shell(`openssl dhparam -check < ${config.dhparamPath}`);
     return true;
   } catch {
     return false;
