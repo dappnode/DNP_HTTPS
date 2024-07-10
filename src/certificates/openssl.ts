@@ -22,7 +22,7 @@ async function certExpiringDate(pem: string) {
 }
 
 async function generateDHParam() {
-  if (fs.existsSync(config.dhparamPath) && isDHParamValid()) {
+  if (fs.existsSync(config.dhparamPath) && await isDHParamValid()) {
     console.log("Valid, skipping");
     return;
   }
