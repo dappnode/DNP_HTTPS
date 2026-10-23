@@ -1,7 +1,7 @@
 import { config } from "../config";
 import fs from "fs";
 import axios from "axios";
-import shell from "../utils/shell";
+import { createPrivateKey, X509Certificate } from "crypto";
 
 async function getEthSignature(timestamp: number): Promise<[string, string]> {
   const response = await axios.post(
@@ -25,24 +25,29 @@ async function executeAPISign(
     force ? 1 : 0
   }`;
   const file = fs.createReadStream(config.csrPath);
-  const response = await axios.postForm(url, {
+  const response = await axios.postForm<string>(url, {
     csr: file,
   });
-  await fs.writeFileSync(config.certPath, response.data);
+  return response.data;
 }
 
 export default async function apiSign() {
+  const privateKey = createPrivateKey(fs.readFileSync(config.keyPath));
   const timestamp = Math.floor(Date.now() / 1000);
   const [signature, address] = await getEthSignature(timestamp);
   const force = process.env["FORCE"] === "true" || false;
 
-  await executeAPISign(signature, address, timestamp, force);
-  const cert_pubkey = shell(
-    `openssl x509 -pubkey -noout -in ${config.certPath}`
-  );
-  const priv_pubkey = shell(`openssl rsa -in ${config.keyPath} -pubout`);
-  if (cert_pubkey !== priv_pubkey) {
+  let certificate = await executeAPISign(signature, address, timestamp, force);
+  if (!new X509Certificate(certificate).checkPrivateKey(privateKey) && !force) {
     console.warn("Keys do not match, trying forcing certification service");
-    await executeAPISign(signature, address, timestamp, true);
+    certificate = await executeAPISign(signature, address, timestamp, true);
   }
+  if (!new X509Certificate(certificate).checkPrivateKey(privateKey)) {
+    throw new Error("Signed certificate does not match the domain private key");
+  }
+
+  // Keep the current certificate intact until a matching replacement is ready.
+  const pendingPath = `${config.certPath}.tmp`;
+  fs.writeFileSync(pendingPath, certificate);
+  fs.renameSync(pendingPath, config.certPath);
 }

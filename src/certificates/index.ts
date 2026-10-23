@@ -1,5 +1,6 @@
 import { config } from "../config";
 import apiSign from "./apiSign";
+import shell from "../utils/shell";
 import {
   createCSR,
   generateDHParam,
@@ -11,8 +12,10 @@ import {
 export async function ensureValidCert(createIfNotExists = false) {
   if (await shouldRenew(createIfNotExists)) {
     await signCert();
+    return true;
   } else {
     console.log("Certificate valid or not necessary, skip signing");
+    return false;
   }
 }
 
@@ -33,9 +36,15 @@ export default async function initCertificateProvider(dappnodeDomain: string) {
   }
 
   console.log("Setting cronjob for cert updates");
+  let reloadPending = false;
   setInterval(async () => {
     try {
-      await ensureValidCert();
+      const renewed = await ensureValidCert();
+      reloadPending = renewed || reloadPending;
+      if (reloadPending) {
+        await shell("nginx -s reload");
+        reloadPending = false;
+      }
     } catch (e) {
       console.warn(e);
     }

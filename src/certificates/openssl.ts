@@ -1,4 +1,3 @@
-import path from "path";
 import { config } from "../config";
 import shell from "../utils/shell";
 import fs from "fs";

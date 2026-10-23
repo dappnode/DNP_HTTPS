@@ -40,9 +40,9 @@ export default async function shell(
  * Can be rethrow to ignore the internal NodeJS stack trace
  */
 export class ShellError extends Error implements child.ExecException {
-  cmd?: string;
+  cmd: string;
   killed?: boolean;
-  code?: number;
+  code?: child.ExecException["code"];
   signal?: NodeJS.Signals;
   stdout?: string;
   stderr?: string;
