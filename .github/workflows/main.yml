@@ -13,14 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: "19.x"
-      - run: yarn
+          node-version-file: ".nvmrc"
+      - run: npm install --global yarn@1.22.22
+      - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn build
       - run: yarn lint
+      - run: yarn lint:ejs
+      - run: yarn test
 
   release:
     name: Release
@@ -28,13 +31,13 @@ jobs:
     needs: [unit-test]
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7.0.1
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: "18.x"
+          node-version-file: ".nvmrc"
       - name: Publish
-        run: npx @dappnode/dappnodesdk publish patch --dappnode_team_preset
+        run: npx --yes @dappnode/dappnodesdk@0.3.55 publish patch --dappnode_team_preset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEVELOPER_ADDRESS: "0xf35960302a07022aba880dffaec2fdd64d5bf1c1"

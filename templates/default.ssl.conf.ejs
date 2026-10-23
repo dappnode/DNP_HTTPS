@@ -1,6 +1,6 @@
 server {
     listen       80;
-    <% if (process.env.LISTEN_IPV6 && process.envLISTEN_IPV6.toLowerCase() === 'true') { %>
+    <% if (process.env.LISTEN_IPV6 && process.env.LISTEN_IPV6.toLowerCase() === 'true') { %>
     listen       [::]:80;
     <% } %>
     server_name  <%- data.domain %>;
@@ -11,10 +11,11 @@ server {
 }
 
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;
     <% if (process.env.LISTEN_IPV6 && process.env.LISTEN_IPV6.toLowerCase() === 'true') { %>
-    listen [::]:443 ssl http2;
+    listen [::]:443 ssl;
     <% } %>
+    http2 on;
     server_name <%- data.domain %>;
 
     ssl_certificate <%- data.certPath %>;

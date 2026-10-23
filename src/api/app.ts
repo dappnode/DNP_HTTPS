@@ -47,11 +47,18 @@ function getHttpsApi(dappnodeDomain: string): Express {
       entries.push({ from, to, external, auth });
       entriesDb.write(entries);
 
-      const reconfigured = await reconfigureNGINX(dappnodeDomain);
-      if (!reconfigured) {
-        entriesDb.write(entries.filter((e) => e.from !== from)); // rollback
-        await reconfigureNGINX(dappnodeDomain);
-        throw new HttpError("Unable to add mapping", 500);
+      try {
+        if (!(await reconfigureNGINX(dappnodeDomain))) {
+          throw new HttpError("Unable to add mapping", 500);
+        }
+      } catch (error) {
+        entriesDb.write(entriesDb.read().filter((e) => e.from !== from));
+        try {
+          await reconfigureNGINX(dappnodeDomain);
+        } catch (rollbackError) {
+          console.warn("Failed to restore NGINX configuration", rollbackError);
+        }
+        throw error;
       }
     })
   );

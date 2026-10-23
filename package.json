@@ -5,30 +5,35 @@
   "main": "bin/index.js",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.2.0",
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "morgan": "^1.10.0"
+    "axios": "^1.20.0",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "morgan": "^1.12.1"
   },
   "devDependencies": {
-    "@types/ejs": "^3.1.1",
-    "@types/express": "^4.17.14",
-    "@types/morgan": "^1.9.3",
-    "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
-    "ejs-lint": "^2.0.0",
-    "eslint": "^8.35.0",
-    "prettier": "^2.8.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.3"
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.6.5",
+    "@typescript-eslint/eslint-plugin": "^8.72.0",
+    "@typescript-eslint/parser": "^8.72.0",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "ts-node": "^10.9.2",
+    "typescript": "~6.0.3"
   },
   "scripts": {
     "build": "tsc",
     "start": "node ./build/index.js",
     "dev": "ts-node ./src/index.ts",
-    "lint:ejs": "ejslint ./templates/*.ejs",
-    "lint": "eslint . --ext .ts --fix",
-    "prettier": "prettier --write 'src/**/*.*'"
-  }
+    "lint:ejs": "node scripts/lint-ejs.cjs",
+    "lint": "eslint src --max-warnings 0",
+    "prettier": "prettier --write 'src/**/*.*'",
+    "test": "node --test test/*.test.cjs"
+  },
+  "engines": {
+    "node": ">=26.12.1 <27"
+  },
+  "packageManager": "yarn@1.22.22"
 }
