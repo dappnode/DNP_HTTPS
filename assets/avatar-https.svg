@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300" role="img" aria-labelledby="title desc">
+  <title id="title">Dappnode HTTPS portal</title>
+  <desc id="desc">A solid shield in Dappnode's cyan, blue, violet, magenta, orange and yellow palette, with a transparent padlock cutout and a central keyhole.</desc>
+  <defs>
+    <linearGradient id="shield" x1="59" y1="40" x2="238" y2="261" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00D1E3"/>
+      <stop offset="0.3" stop-color="#008CFF"/>
+      <stop offset="0.58" stop-color="#5231C6"/>
+      <stop offset="0.8" stop-color="#DB00ED"/>
+      <stop offset="1" stop-color="#FF397F"/>
+    </linearGradient>
+    <radialGradient id="warm" cx="248" cy="50" r="190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB900"/>
+      <stop offset="0.3" stop-color="#FF9528"/>
+      <stop offset="0.64" stop-color="#FF397F" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#FF397F" stop-opacity="0"/>
+    </radialGradient>
+    <path id="shield-shape" d="M150 28 C179 47 213 57 250 60 V139 C250 201 213 246 150 274 C87 246 50 201 50 139 V60 C87 57 121 47 150 28 Z"/>
+    <mask id="lock-cutout" maskUnits="userSpaceOnUse" x="0" y="0" width="300" height="300">
+      <use href="#shield-shape" fill="white" stroke="white" stroke-width="20" stroke-linejoin="round"/>
+      <path d="M120 136 V113 A30 30 0 0 1 180 113 V136" fill="none" stroke="black" stroke-width="18" stroke-linecap="round"/>
+      <rect x="99" y="130" width="102" height="78" rx="18" fill="black"/>
+      <circle cx="150" cy="161" r="10" fill="white"/>
+      <path d="M145 167 H155 L159 186 H141 Z" fill="white"/>
+    </mask>
+  </defs>
+  <g mask="url(#lock-cutout)">
+    <rect width="300" height="300" fill="url(#shield)"/>
+    <rect width="300" height="300" fill="url(#warm)"/>
+  </g>
+</svg>
