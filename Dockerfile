@@ -1,4 +1,4 @@
-FROM node:26.12.1-alpine3.24 AS base
+FROM node:26.13.1-alpine3.24 AS base
 
 # RHSB-2026-012: refresh the OS trust store as well as Node's bundled CAs.
 RUN apk upgrade --no-cache \
